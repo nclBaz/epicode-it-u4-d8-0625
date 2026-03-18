@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class Main {
@@ -60,6 +61,27 @@ public class Main {
 
 		randomUsers.forEach(user -> System.out.println(user));
 
+		// ********************************************* PREDICATES **********************************************
+		Predicate<Integer> isGreaterThanZero = number -> number > 0;
+		Predicate<Integer> isLessThanHundred = number -> number < 100;
+
+		System.out.println(isGreaterThanZero.test(10));
+		System.out.println(isLessThanHundred.test(10));
+
+		System.out.println(isGreaterThanZero.and(isLessThanHundred).test(10));
+
+		Predicate<User> isAdult = user -> user.getAge() >= 18;
+
+		randomUsers.forEach(user -> {
+			if (isAdult.test(user)) System.out.println("L'utente " + user + " è maggiorenne!");
+			else System.out.println("L'utente " + user + " è minorenne!");
+		});
+
+		// ************************************* REMOVE IF ************************************
+		System.out.println("*************************** REMOVE IF ****************************");
+		randomUsers.removeIf(user -> user.getAge() >= 18); // Rimuove dalla lista tutti quelli che sono maggiorenni
+		// randomUsers.removeIf(isAdult); // Se il Predicate l'ho già definito in precedenza posso usarlo direttamente qua
+		randomUsers.forEach(user -> System.out.println(user));
 
 	}
 }
