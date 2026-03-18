@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class Main {
 	public static void main(String[] args) {
@@ -79,9 +80,35 @@ public class Main {
 
 		// ************************************* REMOVE IF ************************************
 		System.out.println("*************************** REMOVE IF ****************************");
-		randomUsers.removeIf(user -> user.getAge() >= 18); // Rimuove dalla lista tutti quelli che sono maggiorenni
+		// randomUsers.removeIf(user -> user.getAge() >= 18); // Rimuove dalla lista tutti quelli che sono maggiorenni
 		// randomUsers.removeIf(isAdult); // Se il Predicate l'ho già definito in precedenza posso usarlo direttamente qua
-		randomUsers.forEach(user -> System.out.println(user));
+		// randomUsers.forEach(user -> System.out.println(user));
+
+		// ******************************************** STREAMS - OPERAZIONI INTERMEDIE *******************************************
+		// Le operazioni intermedie degli Stream restituiscono sempre un nuovo STREAM, questo perché è prevista la possibilità di concatenare
+		// più operazioni intermedie una dopo l'altra
+		System.out.println("------------------------------- FILTER ------------------------------");
+		// Il FILTER prende una Lambda di tipo PREDICATE (quindi deve tornare un BOOLEAN), e torna uno STREAM (di User) perché è un'operazione intermedia
+		Stream<User> filteredStream = randomUsers.stream().filter(user -> user.getAge() < 18 && user.getName().equals("Gimli"));
+		// Stampare il contenuto di uno Stream si può fare tramite forEach (ma comunque non stiamo ottenendo una List)
+		filteredStream.forEach(user -> System.out.println(user));
+
+		System.out.println("------------------------------- MAP ------------------------------");
+		// Il MAP è pensato per TRASFORMARE I DATI. Quindi molto probabilmente il tipo di dato che c'è dentro lo Stream cambierà (a differenza
+		// del filter, dove rimane uguale). La Lambda all'interno del .map stabilisce il tipo di dato restituito
+		Stream<String> nomiConcatenati = randomUsers.stream().map(user -> user.getName() + " - " + user.getAge());
+		nomiConcatenati.forEach(nome -> System.out.println(nome));
+		Stream<Integer> streamAges = randomUsers.stream().map(user -> user.getAge());
+
+		System.out.println("------------------------------- FILTER & MAP ------------------------------");
+		Stream<String> cognomiMaggiorenni = randomUsers.stream()
+				.filter(user -> user.getAge() >= 18) // Da questo step ottengo uno Stream<User>
+				.map(user -> user.getSurname()); // Da questo step ottengo uno Stream<String> (SOLO I COGNOMI)
+
+		cognomiMaggiorenni.forEach(cognome -> System.out.println(cognome));
+
+		
+		// ******************************************** STREAMS - OPERAZIONI TERMINALI *******************************************
 
 	}
 }
