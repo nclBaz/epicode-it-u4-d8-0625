@@ -2,6 +2,7 @@ import com.github.javafaker.Faker;
 import entities.User;
 import functional_interfaces.StringModifier;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -134,6 +135,23 @@ public class Main {
 		usersMinorenni.forEach(user -> System.out.println(user));
 		List<String> nomiUsersMinorenni = randomUsers.stream().filter(user -> user.getAge() < 18).map(user -> user.getName()).toList();
 		nomiUsersMinorenni.forEach(nome -> System.out.println(nome));
+
+
+		// ************************************ DATE IN JAVA ****************************
+		LocalDate today = LocalDate.now();
+		System.out.println(today);
+
+		LocalDate tomorrow = today.plusDays(1);
+		System.out.println(tomorrow);
+
+		LocalDate todayNextYear = today.plusYears(1);
+		System.out.println(todayNextYear);
+
+		System.out.println(todayNextYear.isAfter(today));
+
+		LocalDate date = LocalDate.of(1990, 3, 5);
+		System.out.println(date);
+
 
 	}
 }
