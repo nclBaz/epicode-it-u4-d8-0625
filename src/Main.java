@@ -107,8 +107,33 @@ public class Main {
 
 		cognomiMaggiorenni.forEach(cognome -> System.out.println(cognome));
 
-		
+
 		// ******************************************** STREAMS - OPERAZIONI TERMINALI *******************************************
+
+		System.out.println("----------------------------------- ANYMATCH & ALLMATCH ----------------------------------------");
+		// Sono l'equivalente dei metodi .some() e .every() in JavaScript
+		// AnyMatch: termina lo Stream tornando un BOOLEANO, che sarà VERO se ALMENO UN elemento dello stream soddisfa una certa condizione (Predicate)
+		// AllMatch: termina lo Stream tornando un BOOLEANO, che sarà VERO se TUTTI GLI elementi dello stream soddisfano una certa condizione (Predicate)
+		if (randomUsers.stream().anyMatch(user -> user.getAge() >= 18)) System.out.println("Almeno uno è maggiorenne");
+		else System.out.println("Sono tutti minorenni");
+
+		if (randomUsers.stream().allMatch(user -> user.getAge() >= 18)) System.out.println("Tutti sono maggiorenni");
+		else System.out.println("C'è almeno un minorenne");
+
+		System.out.println("----------------------------------- REDUCE ----------------------------------------");
+		int totalAges = randomUsers.stream()
+//				.filter(user -> user.getAge() < 18)
+				.map(user -> user.getAge())
+				.reduce(0, (acc, currentAge) -> acc + currentAge);
+
+		System.out.println("La somma totale delle età è: " + totalAges);
+
+
+		System.out.println("----------------------------------- TO LIST ----------------------------------------");
+		List<User> usersMinorenni = randomUsers.stream().filter(user -> user.getAge() < 18).toList();
+		usersMinorenni.forEach(user -> System.out.println(user));
+		List<String> nomiUsersMinorenni = randomUsers.stream().filter(user -> user.getAge() < 18).map(user -> user.getName()).toList();
+		nomiUsersMinorenni.forEach(nome -> System.out.println(nome));
 
 	}
 }
